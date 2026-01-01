@@ -1,22 +1,73 @@
-index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Explore.org Nature TV</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background: black;
       width: 100%;
       height: 100%;
+      background-color: black;
       overflow: hidden;
+    }
+
+    #player {
+      width: 100vw;
+      height: 100vh;
     }
   </style>
 </head>
+
 <body>
-<iframe width="90%" height="90%" src="https://www.youtube.com/embed/2360fnKZcIQ?autoplay=1&controls=1&mute=1" title="Anan Wildlife Observatory Lower Falls and Caves Tongass National Forest powered by EXPLORE.org" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+  <!-- YouTube player container -->
+  <div id="player"></div>
+
+  <!-- Load YouTube IFrame API -->
+  <script>
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+
+    var player;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        width: '100%',
+        height: '100%',
+        videoId: '2360fnKZcIQ',   // 👈 replace with your video ID
+
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          mute: 1,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1,
+          fs: 1
+        },
+
+        events: {
+          onReady: function (event) {
+            event.target.setPlaybackQuality('hd1080');
+            event.target.playVideo();
+          },
+
+          onStateChange: function (event) {
+            // Restart video if it ends (good for looping single videos)
+            if (event.data === YT.PlayerState.ENDED) {
+              event.target.playVideo();
+            }
+          }
+        }
+      });
+    }
+  </script>
+
 </body>
 </html>
